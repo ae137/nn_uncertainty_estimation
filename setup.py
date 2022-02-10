@@ -13,7 +13,7 @@ setup(
     description='A collection of custom additions to Tensorflow / Keras',
     long_description=open('README.md').read(),
     install_requires=[
-        "tensorflow==2.5.1",
+        "tensorflow==2.5.3",
     ],
     python_requires=">=3.8"
 )
