@@ -1,6 +1,6 @@
 """Collection of custom loss functions for Tensorflow / Keras."""
 
-import tensorflow as tf  # type: ignore
+import tensorflow as tf
 
 
 class NegativeLogLikelihoodLoss(tf.keras.losses.Loss):
@@ -21,9 +21,17 @@ class NegativeLogLikelihoodLoss(tf.keras.losses.Loss):
         y_pred = tf.convert_to_tensor(y_pred)
         y_true = tf.cast(y_true, y_pred.dtype)
 
-        tf.debugging.assert_equal(tf.rank(y_true), tf.rank(y_pred), message="Input tensors must have equal rank.")
-        tf.debugging.assert_equal(tf.shape(y_true)[-1], 1, message="Last dimension of y_true must be 1.")
-        tf.debugging.assert_equal(tf.shape(y_pred)[-1], 2, message="Last dimension of y_pred must be 2.")
+        tf.debugging.assert_equal(
+            tf.rank(y_true),
+            tf.rank(y_pred),
+            message="Input tensors must have equal rank.",
+        )
+        tf.debugging.assert_equal(
+            tf.shape(y_true)[-1], 1, message="Last dimension of y_true must be 1."
+        )
+        tf.debugging.assert_equal(
+            tf.shape(y_pred)[-1], 2, message="Last dimension of y_pred must be 2."
+        )
 
         y_pred_mu = y_pred[..., 0:1]
         y_pred_log_var = y_pred[..., 1:2]

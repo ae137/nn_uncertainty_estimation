@@ -1,13 +1,12 @@
 """Unit tests for metrics.py."""
 
+import numpy as np
 import pytest
-
-import numpy as np  # type: ignore
-import tensorflow as tf  # type: ignore
+import tensorflow as tf
 
 from nn_uncertainty_estimation.metrics import (
     AdaptedMseForNllOutput,
-    AdaptedMaeForNllOutput
+    AdaptedMaeForNllOutput,
 )
 
 
@@ -20,7 +19,7 @@ class TestAdaptedMseForNllOutput:
         loss_function = AdaptedMseForNllOutput()
 
         with pytest.raises(tf.errors.InvalidArgumentError):
-            loss_function(y_true=1., y_pred=2.)
+            loss_function.update_state(y_true=1.0, y_pred=2.0)
 
     def test_bad_shapes(self) -> None:
         """Expect that function fails with inputs of bad shapes."""
@@ -29,15 +28,21 @@ class TestAdaptedMseForNllOutput:
 
         with pytest.raises(tf.errors.InvalidArgumentError):
             # Wrong shape of y_pred
-            loss_function(y_true=np.array([[1.]]), y_pred=np.array([[1.]]))
+            loss_function.update_state(
+                y_true=np.array([[1.0]]), y_pred=np.array([[1.0]])
+            )
 
         with pytest.raises(tf.errors.InvalidArgumentError):
             # Wrong shape of y_true
-            loss_function(y_true=np.array([1.]), y_pred=np.array([[1., 2.]]))
+            loss_function.update_state(
+                y_true=np.array([1.0]), y_pred=np.array([[1.0, 2.0]])
+            )
 
         with pytest.raises(tf.errors.InvalidArgumentError):
             # Wrong shape of y_true
-            loss_function(y_true=np.array([[1., 1.]]), y_pred=np.array([[1., 1.]]))
+            loss_function.update_state(
+                y_true=np.array([[1.0, 1.0]]), y_pred=np.array([[1.0, 1.0]])
+            )
 
 
 class TestAdaptedMaeForNllOutput:
@@ -49,7 +54,7 @@ class TestAdaptedMaeForNllOutput:
         loss_function = AdaptedMaeForNllOutput()
 
         with pytest.raises(tf.errors.InvalidArgumentError):
-            loss_function(y_true=1., y_pred=2.)
+            loss_function.update_state(y_true=1.0, y_pred=2.0)
 
     def test_bad_shapes(self) -> None:
         """Expect that function fails with inputs of bad shapes."""
@@ -58,12 +63,18 @@ class TestAdaptedMaeForNllOutput:
 
         with pytest.raises(tf.errors.InvalidArgumentError):
             # Wrong shape of y_pred
-            loss_function(y_true=np.array([[1.]]), y_pred=np.array([[1.]]))
+            loss_function.update_state(
+                y_true=np.array([[1.0]]), y_pred=np.array([[1.0]])
+            )
 
         with pytest.raises(tf.errors.InvalidArgumentError):
             # Wrong shape of y_true
-            loss_function(y_true=np.array([1.]), y_pred=np.array([[1., 2.]]))
+            loss_function.update_state(
+                y_true=np.array([1.0]), y_pred=np.array([[1.0, 2.0]])
+            )
 
         with pytest.raises(tf.errors.InvalidArgumentError):
             # Wrong shape of y_true
-            loss_function(y_true=np.array([[1., 1.]]), y_pred=np.array([[1., 1.]]))
+            loss_function.update_state(
+                y_true=np.array([[1.0, 1.0]]), y_pred=np.array([[1.0, 1.0]])
+            )
